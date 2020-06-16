@@ -13,6 +13,7 @@ class CentralViewController: UIViewController {
     // UIViewController overrides, properties specific to this class, private helper methods, etc.
 
     @IBOutlet var textView: UITextView!
+    @IBOutlet var imageView: UIImageView!
 
     var centralManager: CBCentralManager!
 
@@ -24,6 +25,7 @@ class CentralViewController: UIViewController {
     let defaultIterations = 5     // change this value based on test usecase
     
     var data = Data()
+    var image = UIImage()
 
     // MARK: - view lifecycle
     
@@ -258,6 +260,24 @@ extension CentralViewController: CBCentralManagerDelegate {
 
 }
 
+public extension Data {
+
+    // MARK: Public Methods
+
+    /// データ→イメージに変換する
+    ///
+    /// - Returns: 変換後のイメージ
+    func toImage() -> UIImage {
+        guard let image = UIImage(data: self) else {
+            print("データをイメージに変換できませんでした。")
+            return UIImage()
+        }
+
+        return image
+    }
+
+}
+
 extension CentralViewController: CBPeripheralDelegate {
     // implementations of the CBPeripheralDelegate methods
 
@@ -335,8 +355,9 @@ extension CentralViewController: CBPeripheralDelegate {
             // End-of-message case: show the data.
             // Dispatch the text view update to the main queue for updating the UI, because
             // we don't know which thread this method will be called back on.
+            image = characteristicData.toImage()
             DispatchQueue.main.async() {
-                self.textView.text = String(data: self.data, encoding: .utf8)
+                self.imageView.image = self.image
             }
             
             // Write test data

@@ -13,12 +13,16 @@ class PeripheralViewController: UIViewController {
 
     @IBOutlet var textView: UITextView!
     @IBOutlet var advertisingSwitch: UISwitch!
+    @IBOutlet var imageView: UIImageView!
     
     var peripheralManager: CBPeripheralManager!
 
     var transferCharacteristic: CBMutableCharacteristic?
     var connectedCentral: CBCentral?
     var dataToSend = Data()
+    var imageToSend = UIImage()
+    var image = UIImage()
+    var pngData = Data()
     var sendDataIndex: Int = 0
     
     // MARK: - View Lifecycle
@@ -26,6 +30,9 @@ class PeripheralViewController: UIViewController {
     override func viewDidLoad() {
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
         super.viewDidLoad()
+        
+        let image = UIImageView(image: UIImage(named: "turtlerock"))
+        self.view.addSubview(image)
 
     }
     
@@ -54,7 +61,7 @@ class PeripheralViewController: UIViewController {
      */
     static var sendingEOM = false
     
-    private func sendData() {
+/*    private func sendData() {
 		
 		guard let transferCharacteristic = transferCharacteristic else {
 			return
@@ -127,6 +134,17 @@ class PeripheralViewController: UIViewController {
             }
         }
     }
+ */
+    
+    private func sendImage() {
+        guard let transferCharacteristic = transferCharacteristic else {
+            return
+        }
+        let chunk = pngData
+        os_log("%d bytes from image", chunk.count)
+        peripheralManager.updateValue(pngData, for: transferCharacteristic, onSubscribedCentrals: nil)
+        os_log("Sent data of image")
+    }
 
     private func setupPeripheral() {
         
@@ -150,6 +168,14 @@ class PeripheralViewController: UIViewController {
         // Save the characteristic for later.
         self.transferCharacteristic = transferCharacteristic
 
+    }
+}
+extension UIImage {
+    public func toPNGData() -> Data {
+        guard let data = self.pngData() else {
+            return Data()
+        }
+        return data
     }
 }
 
@@ -218,7 +244,8 @@ extension PeripheralViewController: CBPeripheralManagerDelegate {
         os_log("Central subscribed to characteristic")
         
         // Get the data
-        dataToSend = textView.text.data(using: .utf8)!
+       // dataToSend = textView.text.data(using: .utf8)!
+        pngData = image.toPNGData()
         
         // Reset the index
         sendDataIndex = 0
@@ -227,7 +254,7 @@ extension PeripheralViewController: CBPeripheralManagerDelegate {
         connectedCentral = central
         
         // Start sending
-        sendData()
+        sendImage()
     }
     
     /*
@@ -244,7 +271,7 @@ extension PeripheralViewController: CBPeripheralManagerDelegate {
      */
     func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
         // Start sending again
-        sendData()
+        sendImage()
     }
     
     /*
