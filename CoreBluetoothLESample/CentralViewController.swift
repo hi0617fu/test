@@ -26,6 +26,7 @@ class CentralViewController: UIViewController {
     
     var data = Data()
     var image = UIImage()
+    var dataToImage = UIImage()
 
     // MARK: - view lifecycle
     
@@ -124,8 +125,19 @@ class CentralViewController: UIViewController {
             discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
         }
     }
-    
 }
+public extension Data {
+    func toImage() -> UIImage {
+        guard let image = UIImage(data: self) else {
+            print("データをイメージに変換できませんでした。")
+            return UIImage()
+        }
+
+        return image
+    }
+
+}
+
 
 extension CentralViewController: CBCentralManagerDelegate {
     // implementations of the CBCentralManagerDelegate methods
@@ -260,23 +272,7 @@ extension CentralViewController: CBCentralManagerDelegate {
 
 }
 
-public extension Data {
 
-    // MARK: Public Methods
-
-    /// データ→イメージに変換する
-    ///
-    /// - Returns: 変換後のイメージ
-    func toImage() -> UIImage {
-        guard let image = UIImage(data: self) else {
-            print("データをイメージに変換できませんでした。")
-            return UIImage()
-        }
-
-        return image
-    }
-
-}
 
 extension CentralViewController: CBPeripheralDelegate {
     // implementations of the CBPeripheralDelegate methods
@@ -329,6 +325,7 @@ extension CentralViewController: CBPeripheralDelegate {
             // If it is, subscribe to it
             transferCharacteristic = characteristic
             peripheral.setNotifyValue(true, for: characteristic)
+           os_log("あ")
         }
         
         // Once this is complete, we just need to wait for the data to come in.
@@ -345,27 +342,39 @@ extension CentralViewController: CBPeripheralDelegate {
             return
         }
         
-        guard let characteristicData = characteristic.value,
-            let stringFromData = String(data: characteristicData, encoding: .utf8) else { return }
+            //let stringFromData = String(data: characteristicData, encoding: .utf8) else { return }
         
-        os_log("Received %d bytes: %s", characteristicData.count, stringFromData)
+       // os_log("Received %d bytes: %s", characteristicData.count, stringFromData)
         
         // Have we received the end-of-message token?
-        if stringFromData == "EOM" {
+      //  if stringFromData == "EOM" {
             // End-of-message case: show the data.
             // Dispatch the text view update to the main queue for updating the UI, because
             // we don't know which thread this method will be called back on.
-            image = characteristicData.toImage()
-            DispatchQueue.main.async() {
-                self.imageView.image = self.image
-            }
+        
+       /*     let image = UIImage(named: "turtlerock")
+            let imageToData = image?.toPNGData()
+            let imageToSend = imageToData?.toImage()
+            imageView = UIImageView(image: imageToSend)
+            self.view.addSubview(imageView) */
+        let characteristicData = characteristic.value!
+        print("characteristicData=")
+        print(characteristicData)
+        let dataToImage = characteristicData.toImage()
+        imageView = UIImageView(image:dataToImage)
+        self.view.addSubview(imageView)
+     /*   let image = characteristicData.toPNGData()
+        let dataToImage = image.toImage()
+        imageView = UIImageView(image: dataToImage)
+        self.view.addSubview(imageView) */
+            
             
             // Write test data
             writeData()
-        } else {
+        //} else {
             // Otherwise, just append the data to what we have previously received.
-            data.append(characteristicData)
-        }
+            //data.append(characteristicData)
+       // }
     }
 
     /*

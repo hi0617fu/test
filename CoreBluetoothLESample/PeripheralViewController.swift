@@ -22,6 +22,7 @@ class PeripheralViewController: UIViewController {
     var dataToSend = Data()
     var imageToSend = UIImage()
     var image = UIImage()
+    var imageToData = Data()
     var pngData = Data()
     var sendDataIndex: Int = 0
     
@@ -31,8 +32,11 @@ class PeripheralViewController: UIViewController {
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
         super.viewDidLoad()
         
-        let image = UIImageView(image: UIImage(named: "turtlerock"))
-        self.view.addSubview(image)
+        let image = UIImage(named: "turtlerock")
+        let imageToData = image?.toPNGData()
+        let imageToSend = imageToData?.toImage()
+        imageView = UIImageView(image: imageToSend)
+        self.view.addSubview(imageView)
 
     }
     
@@ -140,9 +144,11 @@ class PeripheralViewController: UIViewController {
         guard let transferCharacteristic = transferCharacteristic else {
             return
         }
-        let chunk = pngData
-        os_log("%d bytes from image", chunk.count)
-        peripheralManager.updateValue(pngData, for: transferCharacteristic, onSubscribedCentrals: nil)
+        let image = UIImage(named: "turtlerock")
+        let imageToData = image?.toPNGData()
+        let chunk = imageToData
+        os_log("%d bytes from image", chunk!.count)
+        peripheralManager.updateValue(imageToData!, for: transferCharacteristic, onSubscribedCentrals: nil)
         os_log("Sent data of image")
     }
 
@@ -173,9 +179,19 @@ class PeripheralViewController: UIViewController {
 extension UIImage {
     public func toPNGData() -> Data {
         guard let data = self.pngData() else {
+            print("イメージをデータに変換できませんでした。")
             return Data()
         }
         return data
+    }
+}
+extension UIImage {
+    func resized(toWidth width: CGFloat) -> UIImage? {
+        let canvasSize = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: canvasSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
 
@@ -245,6 +261,7 @@ extension PeripheralViewController: CBPeripheralManagerDelegate {
         
         // Get the data
        // dataToSend = textView.text.data(using: .utf8)!
+        image=UIImage(named: "turtlerock")!
         pngData = image.toPNGData()
         
         // Reset the index
