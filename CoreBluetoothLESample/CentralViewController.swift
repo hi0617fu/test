@@ -357,11 +357,24 @@ extension CentralViewController: CBPeripheralDelegate {
             let imageToSend = imageToData?.toImage()
             imageView = UIImageView(image: imageToSend)
             self.view.addSubview(imageView) */
+        let screenWidth:CGFloat = view.frame.size.width
+        let screenHeight:CGFloat = view.frame.size.height
+        
+        // ImageView frame をCGRectで作った矩形に合わせる
+        
         let characteristicData = characteristic.value!
         print("characteristicData=")
         print(characteristicData)
         let dataToImage = characteristicData.toImage()
         imageView = UIImageView(image:dataToImage)
+        let imgWidth:CGFloat = dataToImage.size.width
+        let imgHeight:CGFloat = dataToImage.size.height
+        // 画像サイズをスクリーン幅に合わせる
+        let scale:CGFloat = screenWidth / imgWidth
+        let rect:CGRect =
+            CGRect(x:0, y:0, width:imgWidth*scale, height:imgHeight*scale)
+        imageView.frame = rect;
+        imageView.center = CGPoint(x:screenWidth/2, y:screenHeight/2)
         self.view.addSubview(imageView)
      /*   let image = characteristicData.toPNGData()
         let dataToImage = image.toImage()

@@ -32,10 +32,22 @@ class PeripheralViewController: UIViewController {
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
         super.viewDidLoad()
         
-        let image = UIImage(named: "turtlerock")
-        let imageToData = image?.toPNGData()
-        let imageToSend = imageToData?.toImage()
+        let screenWidth:CGFloat = view.frame.size.width
+        let screenHeight:CGFloat = view.frame.size.height
+        
+        let image = #imageLiteral(resourceName: "turtlerock.png").resized(toWidth: 8)
+        let imageToData = image!.toPNGData()
+        let imageToSend = imageToData.toImage()
+        let imgWidth:CGFloat = imageToSend.size.width
+        let imgHeight:CGFloat = imageToSend.size.height
+        
+        // 画像サイズをスクリーン幅に合わせる
+        let scale:CGFloat = screenWidth / imgWidth
+        let rect:CGRect =
+            CGRect(x:0, y:0, width:imgWidth*scale, height:imgHeight*scale)
         imageView = UIImageView(image: imageToSend)
+        imageView.frame = rect;
+        imageView.center = CGPoint(x:screenWidth/2, y:screenHeight/2)
         self.view.addSubview(imageView)
 
     }
@@ -144,11 +156,12 @@ class PeripheralViewController: UIViewController {
         guard let transferCharacteristic = transferCharacteristic else {
             return
         }
-        let image = UIImage(named: "turtlerock")
-        let imageToData = image?.toPNGData()
+
+        let image = #imageLiteral(resourceName: "turtlerock.png").resized(toWidth: 8)
+        let imageToData = image!.toPNGData()
         let chunk = imageToData
-        os_log("%d bytes from image", chunk!.count)
-        peripheralManager.updateValue(imageToData!, for: transferCharacteristic, onSubscribedCentrals: nil)
+        os_log("%d bytes from image", chunk.count)
+        peripheralManager.updateValue(imageToData, for: transferCharacteristic, onSubscribedCentrals: nil)
         os_log("Sent data of image")
     }
 
@@ -261,9 +274,7 @@ extension PeripheralViewController: CBPeripheralManagerDelegate {
         
         // Get the data
        // dataToSend = textView.text.data(using: .utf8)!
-        image=UIImage(named: "turtlerock")!
-        pngData = image.toPNGData()
-        
+
         // Reset the index
         sendDataIndex = 0
         
