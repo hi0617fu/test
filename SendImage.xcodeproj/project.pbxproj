@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		012C3064226FD13B00BADEF9 /* CoreBluetoothLESample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreBluetoothLESample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		012C3064226FD13B00BADEF9 /* SendImage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SendImage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		012C3067226FD13B00BADEF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		012C306C226FD13B00BADEF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		012C306E226FD13B00BADEF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 		012C3065226FD13B00BADEF9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				012C3064226FD13B00BADEF9 /* CoreBluetoothLESample.app */,
+				012C3064226FD13B00BADEF9 /* SendImage.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,9 +112,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		012C3063226FD13B00BADEF9 /* CoreBluetoothLESample */ = {
+		012C3063226FD13B00BADEF9 /* SendImage */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 012C3076226FD13B00BADEF9 /* Build configuration list for PBXNativeTarget "CoreBluetoothLESample" */;
+			buildConfigurationList = 012C3076226FD13B00BADEF9 /* Build configuration list for PBXNativeTarget "SendImage" */;
 			buildPhases = (
 				012C3060226FD13B00BADEF9 /* Sources */,
 				012C3061226FD13B00BADEF9 /* Frameworks */,
@@ -124,9 +124,9 @@
 			);
 			dependencies = (
 			);
-			name = CoreBluetoothLESample;
+			name = SendImage;
 			productName = BTLETransfer;
-			productReference = 012C3064226FD13B00BADEF9 /* CoreBluetoothLESample.app */;
+			productReference = 012C3064226FD13B00BADEF9 /* SendImage.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -145,7 +145,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 012C305F226FD13B00BADEF9 /* Build configuration list for PBXProject "CoreBluetoothLESample" */;
+			buildConfigurationList = 012C305F226FD13B00BADEF9 /* Build configuration list for PBXProject "SendImage" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -158,7 +158,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				012C3063226FD13B00BADEF9 /* CoreBluetoothLESample */,
+				012C3063226FD13B00BADEF9 /* SendImage */,
 			);
 		};
 /* End PBXProject section */
@@ -346,7 +346,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.CoreBluetoothLESample${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SendImage;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -368,7 +368,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.CoreBluetoothLESample${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SendImage;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -378,7 +378,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		012C305F226FD13B00BADEF9 /* Build configuration list for PBXProject "CoreBluetoothLESample" */ = {
+		012C305F226FD13B00BADEF9 /* Build configuration list for PBXProject "SendImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				012C3074226FD13B00BADEF9 /* Debug */,
@@ -387,7 +387,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		012C3076226FD13B00BADEF9 /* Build configuration list for PBXNativeTarget "CoreBluetoothLESample" */ = {
+		012C3076226FD13B00BADEF9 /* Build configuration list for PBXNativeTarget "SendImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				012C3077226FD13B00BADEF9 /* Debug */,
